@@ -1,11 +1,7 @@
 
-# find loop
-# calc dist
-# get res
-
 values = []
 start = None
-with open("input2.txt") as f:
+with open("input3") as f:
     lines = f.readlines()
     lines = [line.strip() for line in lines]
     values = []
@@ -28,7 +24,6 @@ def longest_path(grid, start):
     longest_path = 0
 
     while queue:
-        print(queue)
         current_position, steps = queue.popleft()
         row, col = current_position
 
@@ -56,14 +51,14 @@ def get_neighbors(grid, position):
     for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
         new_row, new_col = row + dr, col + dc
 
-        if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] in pipe_types:
-            # Check if the pipe direction allows movement in the current direction
+        if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and not grid[new_row][new_col] == '.':
             new_curr = grid[new_row][new_col]
+            # Check if the pipe direction allows movement in the current direction
             if curr == '|':
-                if dr == -1 and new_curr in ['|', 'L', 'J']:
+                if dr == 1 and new_curr in ['|', 'L', 'J']:
                     # down
                     neighbors.append((new_row, new_col))
-                if dr == 1 and new_curr in ['|', '7', 'F']:
+                if dr == -1 and new_curr in ['|', '7', 'F']:
                     # up
                     neighbors.append((new_row, new_col))
             if curr == '-':
@@ -74,14 +69,14 @@ def get_neighbors(grid, position):
                     # east
                     neighbors.append((new_row, new_col))
             if curr == 'L':
-                if dr == 1 and new_curr in ['|', '7', 'F']:
+                if dr == -1 and new_curr in ['|', '7', 'F']:
                     # up
                     neighbors.append((new_row, new_col))
                 if dc == 1 and new_curr in ['-', 'J', '7']:
                     # east
                     neighbors.append((new_row, new_col))
             if curr == 'J':
-                if dr == 1 and new_curr in ['|', '7', 'F']:
+                if dr == -1 and new_curr in ['|', '7', 'F']:
                     # up
                     neighbors.append((new_row, new_col))
                 if dc == -1 and new_curr in ['-', 'L', 'F']:
@@ -91,21 +86,21 @@ def get_neighbors(grid, position):
                 if dc == -1 and new_curr in ['-', 'L', 'F']:
                     # west
                     neighbors.append((new_row, new_col))
-                if dr == -1 and new_curr in ['|', 'L', 'J']:
+                if dr == 1 and new_curr in ['|', 'L', 'J']:
                     # down
                     neighbors.append((new_row, new_col))
             if curr == 'F':
                 if dc == 1 and new_curr in ['-', 'J', '7']:
                     # east
                     neighbors.append((new_row, new_col))
-                if dr == -1 and new_curr in ['|', 'L', 'J']:
+                if dr == 1 and new_curr in ['|', 'L', 'J']:
                     # down
                     neighbors.append((new_row, new_col))
             if curr == 'S':
-                if dr == -1 and new_curr in ['|', 'L', 'J']:
+                if dr == 1 and new_curr in ['|', 'L', 'J']:
                     # down
                     neighbors.append((new_row, new_col))
-                if dr == 1 and new_curr in ['|', '7', 'F']:
+                if dr == -1 and new_curr in ['|', '7', 'F']:
                     # up
                     neighbors.append((new_row, new_col))
                 if dc == -1 and new_curr in ['-', 'L', 'F']:
@@ -121,3 +116,9 @@ def get_neighbors(grid, position):
 
 result = longest_path(values, start)
 print("Longest Path:", result)
+
+# part 2
+# find points in polygon loop
+# count winding number
+# get answer
+# 
