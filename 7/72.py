@@ -9,13 +9,13 @@ def val_to_int(val):
     elif val == "Q":
         return 12
     elif val == "J":
-        return 11
+        return 1
     elif val == "T":
         return 10
     else:
         return int(val)
 
-with open("input2.txt", "r") as file:
+with open("input1.txt", "r") as file:
     hand_bets = {}
     for line in file.readlines():
         line = line.strip().split(" ")
@@ -29,11 +29,14 @@ with open("input2.txt", "r") as file:
         hand = [val_to_int(char) for char in hand]
         unique_vals = set(hand)
         counts = Counter(hand)
+        jokers = counts[1]
+        c_vals = list(counts.values())
+        # todo  SETUP logic to track jokers in ranking
 
-        if len(unique_vals) == 1:
+        if max(c_vals) + jokers == 5:
             # 5 of a kind
             hands[0].append(hand)
-        elif len(unique_vals) == 2:
+        elif max(c_vals) + jokers == 2:
             if 1 in counts.values():
                 # 4 of a kind
                 hands[1].append(hand)
