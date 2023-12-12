@@ -15,7 +15,7 @@ def val_to_int(val):
     else:
         return int(val)
 
-with open("input1.txt", "r") as file:
+with open("input2.txt", "r") as file:
     hand_bets = {}
     for line in file.readlines():
         line = line.strip().split(" ")
@@ -30,27 +30,29 @@ with open("input1.txt", "r") as file:
         unique_vals = set(hand)
         counts = Counter(hand)
         jokers = counts[1]
+        del counts[1]
         c_vals = list(counts.values())
         # todo  SETUP logic to track jokers in ranking
+        if not c_vals:
+            hands[0].append(hand)
+            continue
 
         if max(c_vals) + jokers == 5:
             # 5 of a kind
             hands[0].append(hand)
+        elif max(c_vals) + jokers == 4:
+            # 4 of a kind
+            hands[1].append(hand)
+        elif max(c_vals) + jokers == 3 and 2 in c_vals:
+            # full house
+            hands[2].append(hand)
+        elif max(c_vals) + jokers == 3:
+            # 3 of a kind
+            hands[3].append(hand)
+        elif max(c_vals) == 2 and c_vals.count(2) >= 2:
+            # 2 pair
+            hands[4].append(hand)
         elif max(c_vals) + jokers == 2:
-            if 1 in counts.values():
-                # 4 of a kind
-                hands[1].append(hand)
-            else:
-                # full house
-                hands[2].append(hand)
-        elif len(unique_vals) == 3:
-            if 3 in counts.values():
-                # 3 of a kind
-                hands[3].append(hand)
-            else:
-                # 2 pairs
-                hands[4].append(hand)
-        elif len(unique_vals) == 4:
             # 1 pair
             hands[5].append(hand)
         else:
@@ -72,4 +74,6 @@ with open("input1.txt", "r") as file:
         for hand in num_hand_li:
             res += curr_rank * hand_bets[hand]
             curr_rank -= 1
+    
+    print(res)
     
